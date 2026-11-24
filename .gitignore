@@ -1,0 +1,11 @@
+.anchor
+.DS_Store
+target
+**/*.rs.bk
+node_modules
+test-ledger
+.yarn
+.surfpool
+deployer-keypair.json
+programs/mole-market/program-keypair.json
+app/dist/

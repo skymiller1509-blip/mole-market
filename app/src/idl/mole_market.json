@@ -1,0 +1,1198 @@
+{
+  "address": "73qWAngM3BnmDeGghKwXEqk4VcmMcWZmCZwRT7SCZAuK",
+  "metadata": {
+    "name": "mole_market",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Mole Market - Among Us meets day trading on MagicBlock Ephemeral Rollups"
+  },
+  "instructions": [
+    {
+      "name": "bot_trade",
+      "discriminator": [
+        188,
+        62,
+        136,
+        150,
+        78,
+        171,
+        231,
+        50
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        },
+        {
+          "name": "seat",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "callback_pick_moles",
+      "discriminator": [
+        245,
+        113,
+        121,
+        241,
+        187,
+        222,
+        124,
+        209
+      ],
+      "accounts": [
+        {
+          "name": "vrf_program_identity",
+          "docs": [
+            "Scoped VRF identity PDA, bound to this program. Its presence as a signer proves",
+            "the callback was issued by the VRF program for this program."
+          ],
+          "signer": true
+        },
+        {
+          "name": "game",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "randomness",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "nonce",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "commit_game",
+      "discriminator": [
+        212,
+        148,
+        56,
+        92,
+        60,
+        28,
+        179,
+        66
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "magic_program",
+          "address": "Magic11111111111111111111111111111111111111"
+        },
+        {
+          "name": "magic_context",
+          "writable": true,
+          "address": "MagicContext1111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_game",
+      "discriminator": [
+        124,
+        69,
+        75,
+        66,
+        184,
+        220,
+        72,
+        206
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "create_session",
+      "discriminator": [
+        242,
+        193,
+        143,
+        179,
+        150,
+        25,
+        122,
+        227
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        },
+        {
+          "name": "seat",
+          "type": "u8"
+        },
+        {
+          "name": "session_key",
+          "type": "pubkey"
+        },
+        {
+          "name": "expiry_slot",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "delegate_game",
+      "discriminator": [
+        116,
+        183,
+        70,
+        107,
+        112,
+        223,
+        122,
+        210
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "buffer_game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "game"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                89,
+                224,
+                32,
+                38,
+                185,
+                67,
+                65,
+                218,
+                189,
+                156,
+                43,
+                8,
+                120,
+                21,
+                163,
+                209,
+                164,
+                194,
+                242,
+                72,
+                235,
+                24,
+                228,
+                255,
+                248,
+                243,
+                89,
+                137,
+                62,
+                141,
+                53,
+                238
+              ]
+            }
+          }
+        },
+        {
+          "name": "delegation_record_game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "game"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "delegation_metadata_game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "game"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner_program",
+          "address": "73qWAngM3BnmDeGghKwXEqk4VcmMcWZmCZwRT7SCZAuK"
+        },
+        {
+          "name": "delegation_program",
+          "address": "DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "end_round",
+      "discriminator": [
+        54,
+        47,
+        1,
+        200,
+        250,
+        6,
+        144,
+        63
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "fill_bots",
+      "discriminator": [
+        85,
+        182,
+        84,
+        125,
+        235,
+        255,
+        16,
+        112
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "join_game",
+      "discriminator": [
+        107,
+        112,
+        18,
+        38,
+        56,
+        173,
+        60,
+        128
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "player",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        },
+        {
+          "name": "seat",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "pick_moles_demo",
+      "discriminator": [
+        65,
+        210,
+        58,
+        242,
+        10,
+        64,
+        77,
+        54
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        },
+        {
+          "name": "seed",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "process_undelegation",
+      "discriminator": [
+        196,
+        28,
+        41,
+        206,
+        48,
+        37,
+        51,
+        167
+      ],
+      "accounts": [
+        {
+          "name": "base_account",
+          "writable": true
+        },
+        {
+          "name": "buffer",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  101,
+                  45,
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "base_account"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                181,
+                183,
+                0,
+                225,
+                242,
+                87,
+                58,
+                192,
+                204,
+                6,
+                34,
+                1,
+                52,
+                74,
+                207,
+                151,
+                184,
+                53,
+                6,
+                235,
+                140,
+                229,
+                25,
+                152,
+                204,
+                98,
+                126,
+                24,
+                147,
+                128,
+                167,
+                62
+              ]
+            }
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "account_seeds",
+          "type": {
+            "vec": "bytes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "start_round",
+      "discriminator": [
+        144,
+        144,
+        43,
+        7,
+        193,
+        42,
+        217,
+        215
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "oracle_queue",
+          "writable": true,
+          "address": "Cuj97ggrhhidhbu39TijNVqE74xvKJ69gDervRUXAxGh"
+        },
+        {
+          "name": "program_identity",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  100,
+                  101,
+                  110,
+                  116,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "vrf_program",
+          "address": "Vrf1RNUjXmQGjmQrQLvJHs9SNkvDJEsRVFPkfSQUwGz"
+        },
+        {
+          "name": "slot_hashes",
+          "address": "SysvarS1otHashes111111111111111111111111111"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "trade",
+      "discriminator": [
+        178,
+        144,
+        26,
+        216,
+        241,
+        187,
+        206,
+        130
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "signer",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        },
+        {
+          "name": "seat",
+          "type": "u8"
+        },
+        {
+          "name": "is_buy",
+          "type": "bool"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "undelegate_game",
+      "discriminator": [
+        40,
+        145,
+        154,
+        66,
+        48,
+        111,
+        127,
+        1
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "magic_program",
+          "address": "Magic11111111111111111111111111111111111111"
+        },
+        {
+          "name": "magic_context",
+          "writable": true,
+          "address": "MagicContext1111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Game",
+      "discriminator": [
+        27,
+        90,
+        166,
+        125,
+        74,
+        100,
+        121,
+        18
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "SeatOutOfRange",
+      "msg": "Seat index out of range (0-7)"
+    },
+    {
+      "code": 6001,
+      "name": "SeatTaken",
+      "msg": "Seat is already taken"
+    },
+    {
+      "code": 6002,
+      "name": "SeatEmpty",
+      "msg": "Seat is empty"
+    },
+    {
+      "code": 6003,
+      "name": "NotInLobby",
+      "msg": "Game is not in the lobby phase"
+    },
+    {
+      "code": 6004,
+      "name": "NotTrading",
+      "msg": "Game is not in the trading phase"
+    },
+    {
+      "code": 6005,
+      "name": "NotRevealed",
+      "msg": "Game is not in the revealed phase"
+    },
+    {
+      "code": 6006,
+      "name": "SeatsNotFull",
+      "msg": "Not all 8 seats are filled"
+    },
+    {
+      "code": 6007,
+      "name": "NotSeatOwner",
+      "msg": "Signer is not the seat owner or an authorized session key"
+    },
+    {
+      "code": 6008,
+      "name": "AmountZero",
+      "msg": "Trade amount must be greater than zero"
+    },
+    {
+      "code": 6009,
+      "name": "InsufficientBalance",
+      "msg": "Insufficient balance for this trade"
+    },
+    {
+      "code": 6010,
+      "name": "SessionExpired",
+      "msg": "Session key has expired"
+    },
+    {
+      "code": 6011,
+      "name": "VrfAlreadyPending",
+      "msg": "A VRF request is already pending for this game"
+    },
+    {
+      "code": 6012,
+      "name": "VrfNotPending",
+      "msg": "No VRF request is pending"
+    },
+    {
+      "code": 6013,
+      "name": "StaleCallback",
+      "msg": "This VRF callback is for a superseded request"
+    },
+    {
+      "code": 6014,
+      "name": "MolesAlreadyPicked",
+      "msg": "Moles have already been picked for this round"
+    },
+    {
+      "code": 6015,
+      "name": "VrfNotTimedOut",
+      "msg": "VRF request has not timed out yet; wait before using demo randomness"
+    },
+    {
+      "code": 6016,
+      "name": "NotCreator",
+      "msg": "Only the game creator can call this"
+    },
+    {
+      "code": 6017,
+      "name": "NotABot",
+      "msg": "Only bot seats can use the bot trade instruction"
+    },
+    {
+      "code": 6018,
+      "name": "MathOverflow",
+      "msg": "Arithmetic overflow"
+    }
+  ],
+  "types": [
+    {
+      "name": "Game",
+      "docs": [
+        "The whole game lives in one PDA so it can be delegated to an Ephemeral",
+        "Rollup as a single unit (and, in future, gated by a Private ER permission)."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "game_id",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": "u8"
+          },
+          {
+            "name": "randomness_source",
+            "docs": [
+              "SOURCE_NONE / SOURCE_VRF / SOURCE_DEMO. On-chain honesty label."
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "pot",
+            "docs": [
+              "Shared pot, in points. Every trade leaks 2% of its size out of this."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "mole_pool",
+            "docs": [
+              "Points skimmed by the moles so far. Paid out to the moles at reveal."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "price",
+            "docs": [
+              "Index price, 1e4 scale."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "tick",
+            "docs": [
+              "Trade counter. Drives the deterministic bot strategy."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "mole_a",
+            "docs": [
+              "Mole seat indices. 255 = not picked yet."
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "mole_b",
+            "type": "u8"
+          },
+          {
+            "name": "vrf_nonce",
+            "docs": [
+              "Increments on every VRF request; the callback must echo it back."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "pending_vrf",
+            "docs": [
+              "True while a VRF request is outstanding."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "vrf_requested_at",
+            "docs": [
+              "Unix timestamp of the last VRF request (for the demo fallback timeout)."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "seats",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "Seat"
+                  }
+                },
+                8
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Seat",
+      "docs": [
+        "One seat at the table. A seat is either a human (wallet) or a bot."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "docs": [
+              "Wallet that owns the seat, or the bot PDA for bot seats."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "is_bot",
+            "docs": [
+              "True for bot-filled seats."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "balance",
+            "docs": [
+              "Tradable points balance."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "shares",
+            "docs": [
+              "Net shares: positive = long, negative = short."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "entry_price",
+            "docs": [
+              "Volume-weighted average entry price of the current position (1e4 scale)."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "payout",
+            "docs": [
+              "Final payout after end_round (0 until revealed)."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "session_key",
+            "docs": [
+              "Authorized session key (gasless ER trades). Pubkey::default() = none."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "session_expiry",
+            "docs": [
+              "Slot after which the session key stops working."
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

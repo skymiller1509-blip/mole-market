@@ -1,0 +1,21 @@
+[toolchain]
+package_manager = "npm"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+mole_market = "73qWAngM3BnmDeGghKwXEqk4VcmMcWZmCZwRT7SCZAuK"
+
+[programs.devnet]
+mole_market = "73qWAngM3BnmDeGghKwXEqk4VcmMcWZmCZwRT7SCZAuK"
+
+[provider]
+cluster = "https://rpc.magicblock.app/devnet"
+wallet = "deployer-keypair.json"
+
+[scripts]
+test = "cargo test"
+
+[hooks]
