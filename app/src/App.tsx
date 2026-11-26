@@ -95,6 +95,12 @@ export default function App() {
     setLog((prev) => [`${new Date().toLocaleTimeString()} ${line}`, ...prev].slice(0, 30));
   }, []);
 
+  // Dark page background so the app reads as a game, not a plain document.
+  useEffect(() => {
+    document.body.style.background = "#0d1b2e";
+    document.body.style.margin = "0";
+  }, []);
+
   const refresh = useCallback(async () => {
     const p = program ?? readOnlyProgram;
     const g = await fetchGame(p, gameAddress);
@@ -268,9 +274,9 @@ export default function App() {
   const isRevealed = game?.status === 3;
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 860, margin: "0 auto", padding: 16 }}>
-      <h1>Mole Market</h1>
-      <p>Among Us meets day trading. Eight players, one shared pot, two secret moles skimming it.</p>
+    <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 860, margin: "0 auto", padding: 16, background: "linear-gradient(180deg, #1a1033 0%, #0d1b2e 100%)", color: "#f2f2f2", minHeight: "100vh" }}>
+      <h1 style={{ fontSize: 44, margin: "8px 0", background: "linear-gradient(90deg, #ffd166, #ef476f, #9b5de5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Mole Market</h1>
+      <p style={{ fontSize: 18, color: "#ffd166" }}>Among Us meets day trading. Eight players, one shared pot, two secret moles skimming it.</p>
 
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <label>
@@ -316,12 +322,13 @@ export default function App() {
             )}
           </h2>
           <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-            <div>
-              <strong>Shared pot: {game.pot.toString()} pts</strong> (started 8,000 — leaked {leakPct}%)
-              <div style={{ width: 220, height: 12, background: "#ddd" }}>
-                <div style={{ width: `${(game.pot.toNumber() / 8000) * 100}%`, height: "100%", background: "#c0392b" }} />
+            <div style={{ background: "#241b4d", border: "2px solid #9b5de5", borderRadius: 12, padding: 16 }}>
+              <div style={{ fontSize: 34, fontWeight: 800, color: "#06d6a0" }}>Shared pot: {game.pot.toString()} pts</div>
+              <div style={{ color: "#ffd166" }}>Started 8,000 — leaked {leakPct}%</div>
+              <div style={{ width: "100%", height: 28, background: "#0d1b2e", borderRadius: 14, overflow: "hidden", marginTop: 8, border: "1px solid #555" }}>
+                <div style={{ width: `${(game.pot.toNumber() / 8000) * 100}%`, height: "100%", background: "linear-gradient(90deg, #06d6a0, #ffd166)", transition: "width 0.5s" }} />
               </div>
-              <div>Skimmed into the mole pool: {game.molePool.toString()} pts (who got it? nobody knows — yet)</div>
+              <div style={{ marginTop: 10, color: "#ef476f", fontWeight: 800, fontSize: 18 }}>Skimmed into the mole pool: {game.molePool.toString()} pts (who got it? nobody knows — yet)</div>
               <div>Index price: ${fmtPrice(game.price)}</div>
               <div>Trades so far: {game.tick.toString()}</div>
               <div>Delegated to rollup: {delegated === null ? "?" : delegated ? "YES — trades are gasless" : "no — trades settle on base"}</div>
@@ -334,7 +341,7 @@ export default function App() {
               const isMole = isRevealed && (i === game.moleA || i === game.moleB);
               const isMe = signer && seat.owner.equals(signer.publicKey);
               return (
-                <div key={i} style={{ border: "1px solid #999", padding: 8, background: isMole ? "#f9e79f" : isMe ? "#d5f5e3" : "#fff" }}>
+                <div key={i} style={{ border: `2px solid ${isMole ? "#ef476f" : isMe ? "#ffd166" : "#9b5de5"}`, borderRadius: 10, padding: 8, background: isMole ? "#4d1b2e" : isMe ? "#3d2f00" : "#1d2a4a", color: "#f2f2f2" }}>
                   <div>
                     <strong>Seat {i}</strong> {seat.isBot ? "BOT" : "human"} {isMe ? "(YOU)" : ""}
                   </div>
@@ -342,7 +349,7 @@ export default function App() {
                   <div>Balance: {seat.balance.toString()} pts</div>
                   <div>Shares: {seat.shares.toString()}</div>
                   {isRevealed ? (
-                    <div>{isMole ? "MOLE" : "honest"} — payout {seat.payout.toString()} pts</div>
+                    <div style={{ fontWeight: 800, color: isMole ? "#ef476f" : "#06d6a0" }}>{isMole ? "MOLE" : "honest"} — payout {seat.payout.toString()} pts</div>
                   ) : (
                     <div>Role: ? (hidden until reveal)</div>
                   )}
@@ -364,8 +371,8 @@ export default function App() {
             </label>
             <button onClick={doJoin} disabled={!!busy}>Join seat</button>
             <button onClick={doFillBots} disabled={!!busy}>Fill empty seats with bots</button>
-            <button onClick={doStartRound} disabled={!!busy}>Start round — REAL VRF</button>
-            <button onClick={doDemoMoles} disabled={!!busy}>Pick moles — DEMO randomness</button>
+            <button onClick={doStartRound} disabled={!!busy} style={{ background: "#444", color: "#ccc" }}>Start round — REAL VRF</button>
+            <button onClick={doDemoMoles} disabled={!!busy} style={{ background: "#9b5de5", color: "#fff", fontWeight: 800, padding: "8px 14px" }}>Pick moles — DEMO randomness</button>
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", marginTop: 8 }}>
             <label>
@@ -377,10 +384,10 @@ export default function App() {
                 <option value={500}>500</option>
               </select>
             </label>
-            <button onClick={() => doTrade(true)} disabled={!!busy}>Buy</button>
-            <button onClick={() => doTrade(false)} disabled={!!busy}>Sell / short</button>
+            <button onClick={() => doTrade(true)} disabled={!!busy} style={{ background: "#06d6a0", color: "#06281f", fontWeight: 800, padding: "8px 14px" }}>Buy</button>
+            <button onClick={() => doTrade(false)} disabled={!!busy} style={{ background: "#ef476f", color: "#fff", fontWeight: 800, padding: "8px 14px" }}>Sell / short</button>
             <button onClick={doBotRound} disabled={!!busy}>Run bot round</button>
-            <button onClick={doEndRound} disabled={!!busy}>End round + reveal moles</button>
+            <button onClick={doEndRound} disabled={!!busy} style={{ background: "#ffd166", color: "#3d2f00", fontWeight: 800, padding: "8px 14px" }}>End round + reveal moles</button>
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", marginTop: 8 }}>
             <button onClick={doSessionKey} disabled={!!busy || sessionOn}>
@@ -390,7 +397,7 @@ export default function App() {
             <button onClick={doCommit} disabled={!!busy}>Commit to base</button>
             <button onClick={doUndelegate} disabled={!!busy}>Commit + undelegate</button>
           </div>
-          <p style={{ fontSize: 13, color: "#555" }}>
+          <p style={{ fontSize: 13, color: "#bbb" }}>
             Bot seats: {game.seats.map((s, i) => (s.isBot ? botPda(gameId, i).toBase58().slice(0, 4) : null)).filter(Boolean).join(", ") || "none yet"}
           </p>
         </>
@@ -405,7 +412,7 @@ export default function App() {
       </pre>
 
       <hr />
-      <p style={{ fontSize: 13, color: "#555" }}>
+      <p style={{ fontSize: 13, color: "#bbb" }}>
         Honest labels: points are virtual, not money. Mole picks use real MagicBlock VRF when you press
         “REAL VRF”; the demo button uses slot-hash randomness and the game records it on chain as DEMO.
         Mole identities are hidden by this UI until reveal. On chain they sit in the delegated game
