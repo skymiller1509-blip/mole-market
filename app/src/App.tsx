@@ -97,7 +97,7 @@ export default function App() {
 
   // Dark page background so the app reads as a game, not a plain document.
   useEffect(() => {
-    document.body.style.background = "#0d1b2e";
+    document.body.style.background = "#0a0e1a";
     document.body.style.margin = "0";
   }, []);
 
@@ -274,9 +274,16 @@ export default function App() {
   const isRevealed = game?.status === 3;
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 860, margin: "0 auto", padding: 16, background: "linear-gradient(180deg, #1a1033 0%, #0d1b2e 100%)", color: "#f2f2f2", minHeight: "100vh" }}>
-      <h1 style={{ fontSize: 44, margin: "8px 0", background: "linear-gradient(90deg, #ffd166, #ef476f, #9b5de5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Mole Market</h1>
-      <p style={{ fontSize: 18, color: "#ffd166" }}>Among Us meets day trading. Eight players, one shared pot, two secret moles skimming it.</p>
+    <div className="mole-app" style={{ fontFamily: "system-ui, -apple-system, sans-serif", maxWidth: 880, margin: "0 auto", padding: "28px 20px 40px", background: "linear-gradient(180deg, #101828 0%, #0a0e1a 100%)", color: "#f5f1e8", minHeight: "100vh" }}>
+      <style>{`
+        .mole-app button:not(.wallet-adapter-button) { background: rgba(255, 255, 255, 0.05); color: #f5f1e8; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 8px 14px; cursor: pointer; font-family: inherit; font-size: 14px; }
+        .mole-app button:not(.wallet-adapter-button):disabled { opacity: 0.45; cursor: default; }
+        .mole-app select, .mole-app input { background: #141a2a; color: #f5f1e8; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 6px 8px; font-family: inherit; }
+        .mole-app hr { border: none; border-top: 1px solid rgba(212, 175, 106, 0.25); margin: 20px 0; }
+      `}</style>
+      <h1 style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontSize: 48, margin: "8px 0 4px", color: "#f5f1e8", letterSpacing: 1, fontWeight: 600 }}>Mole Market</h1>
+      <div style={{ width: 64, height: 2, background: "#d4af6a", margin: "8px 0 14px" }} />
+      <p style={{ fontSize: 17, color: "#c9a86a", marginTop: 0 }}>Among Us meets day trading. Eight players, one shared pot, two secret moles skimming it.</p>
 
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <label>
@@ -322,26 +329,26 @@ export default function App() {
             )}
           </h2>
           <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-            <div style={{ background: "#241b4d", border: "2px solid #9b5de5", borderRadius: 12, padding: 16 }}>
-              <div style={{ fontSize: 34, fontWeight: 800, color: "#06d6a0" }}>Shared pot: {game.pot.toString()} pts</div>
-              <div style={{ color: "#ffd166" }}>Started 8,000 — leaked {leakPct}%</div>
-              <div style={{ width: "100%", height: 28, background: "#0d1b2e", borderRadius: 14, overflow: "hidden", marginTop: 8, border: "1px solid #555" }}>
-                <div style={{ width: `${(game.pot.toNumber() / 8000) * 100}%`, height: "100%", background: "linear-gradient(90deg, #06d6a0, #ffd166)", transition: "width 0.5s" }} />
+            <div style={{ background: "rgba(212, 175, 106, 0.06)", border: "1px solid rgba(212, 175, 106, 0.35)", borderRadius: 16, padding: 20 }}>
+              <div style={{ fontSize: 32, fontWeight: 700, color: "#e8c87a" }}>Shared pot: {game.pot.toString()} pts</div>
+              <div style={{ color: "#9aa3b2" }}>Started 8,000 — leaked {leakPct}%</div>
+              <div style={{ width: "100%", height: 10, background: "rgba(255, 255, 255, 0.08)", borderRadius: 5, overflow: "hidden", marginTop: 12 }}>
+                <div style={{ width: `${(game.pot.toNumber() / 8000) * 100}%`, height: "100%", background: "linear-gradient(90deg, #e8c87a, #b8934a)", transition: "width 0.5s" }} />
               </div>
-              <div style={{ marginTop: 10, color: "#ef476f", fontWeight: 800, fontSize: 18 }}>Skimmed into the mole pool: {game.molePool.toString()} pts (who got it? nobody knows — yet)</div>
+              <div style={{ marginTop: 12, color: "#e0655f", fontWeight: 700, fontSize: 16 }}>Skimmed into the mole pool: {game.molePool.toString()} pts</div>
               <div>Index price: ${fmtPrice(game.price)}</div>
               <div>Trades so far: {game.tick.toString()}</div>
               <div>Delegated to rollup: {delegated === null ? "?" : delegated ? "YES — trades are gasless" : "no — trades settle on base"}</div>
             </div>
           </div>
 
-          <h3>Seats</h3>
+          <h3 style={{ textTransform: "uppercase", letterSpacing: 2, fontSize: 13, color: "#c9a86a", marginTop: 28 }}>Seats</h3>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
             {game.seats.map((seat, i) => {
               const isMole = isRevealed && (i === game.moleA || i === game.moleB);
               const isMe = signer && seat.owner.equals(signer.publicKey);
               return (
-                <div key={i} style={{ border: `2px solid ${isMole ? "#ef476f" : isMe ? "#ffd166" : "#9b5de5"}`, borderRadius: 10, padding: 8, background: isMole ? "#4d1b2e" : isMe ? "#3d2f00" : "#1d2a4a", color: "#f2f2f2" }}>
+                <div key={i} style={{ border: `1px solid ${isMole ? "#e0655f" : isMe ? "#d4af6a" : "rgba(255, 255, 255, 0.12)"}`, borderRadius: 12, padding: 12, background: isMole ? "rgba(224, 101, 95, 0.12)" : isMe ? "rgba(212, 175, 106, 0.10)" : "rgba(255, 255, 255, 0.03)", color: "#f5f1e8" }}>
                   <div>
                     <strong>Seat {i}</strong> {seat.isBot ? "BOT" : "human"} {isMe ? "(YOU)" : ""}
                   </div>
@@ -349,7 +356,7 @@ export default function App() {
                   <div>Balance: {seat.balance.toString()} pts</div>
                   <div>Shares: {seat.shares.toString()}</div>
                   {isRevealed ? (
-                    <div style={{ fontWeight: 800, color: isMole ? "#ef476f" : "#06d6a0" }}>{isMole ? "MOLE" : "honest"} — payout {seat.payout.toString()} pts</div>
+                    <div style={{ fontWeight: 700, color: isMole ? "#e0655f" : "#7fb685" }}>{isMole ? "MOLE" : "honest"} — payout {seat.payout.toString()} pts</div>
                   ) : (
                     <div>Role: ? (hidden until reveal)</div>
                   )}
@@ -359,7 +366,7 @@ export default function App() {
             })}
           </div>
 
-          <h3>Play</h3>
+          <h3 style={{ textTransform: "uppercase", letterSpacing: 2, fontSize: 13, color: "#c9a86a", marginTop: 28 }}>Play</h3>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
             <label>
               My seat{" "}
@@ -371,8 +378,8 @@ export default function App() {
             </label>
             <button onClick={doJoin} disabled={!!busy}>Join seat</button>
             <button onClick={doFillBots} disabled={!!busy}>Fill empty seats with bots</button>
-            <button onClick={doStartRound} disabled={!!busy} style={{ background: "#444", color: "#ccc" }}>Start round — REAL VRF</button>
-            <button onClick={doDemoMoles} disabled={!!busy} style={{ background: "#9b5de5", color: "#fff", fontWeight: 800, padding: "8px 14px" }}>Pick moles — DEMO randomness</button>
+            <button onClick={doStartRound} disabled={!!busy} style={{ background: "#2a2f3a", color: "#8a93a3" }}>Start round — REAL VRF</button>
+            <button onClick={doDemoMoles} disabled={!!busy} style={{ background: "#d4af6a", color: "#1a1408", fontWeight: 700, padding: "8px 14px" }}>Pick moles — DEMO randomness</button>
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", marginTop: 8 }}>
             <label>
@@ -384,10 +391,10 @@ export default function App() {
                 <option value={500}>500</option>
               </select>
             </label>
-            <button onClick={() => doTrade(true)} disabled={!!busy} style={{ background: "#06d6a0", color: "#06281f", fontWeight: 800, padding: "8px 14px" }}>Buy</button>
-            <button onClick={() => doTrade(false)} disabled={!!busy} style={{ background: "#ef476f", color: "#fff", fontWeight: 800, padding: "8px 14px" }}>Sell / short</button>
+            <button onClick={() => doTrade(true)} disabled={!!busy} style={{ background: "#2f7d5b", color: "#fff", fontWeight: 700, padding: "8px 14px" }}>Buy</button>
+            <button onClick={() => doTrade(false)} disabled={!!busy} style={{ background: "#b04a44", color: "#fff", fontWeight: 700, padding: "8px 14px" }}>Sell / short</button>
             <button onClick={doBotRound} disabled={!!busy}>Run bot round</button>
-            <button onClick={doEndRound} disabled={!!busy} style={{ background: "#ffd166", color: "#3d2f00", fontWeight: 800, padding: "8px 14px" }}>End round + reveal moles</button>
+            <button onClick={doEndRound} disabled={!!busy} style={{ background: "#d4af6a", color: "#1a1408", fontWeight: 700, padding: "8px 14px" }}>End round + reveal moles</button>
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", marginTop: 8 }}>
             <button onClick={doSessionKey} disabled={!!busy || sessionOn}>
@@ -397,7 +404,7 @@ export default function App() {
             <button onClick={doCommit} disabled={!!busy}>Commit to base</button>
             <button onClick={doUndelegate} disabled={!!busy}>Commit + undelegate</button>
           </div>
-          <p style={{ fontSize: 13, color: "#bbb" }}>
+          <p style={{ fontSize: 13, color: "#8a93a3" }}>
             Bot seats: {game.seats.map((s, i) => (s.isBot ? botPda(gameId, i).toBase58().slice(0, 4) : null)).filter(Boolean).join(", ") || "none yet"}
           </p>
         </>
@@ -405,14 +412,14 @@ export default function App() {
         <p>No game loaded at this ID yet. Create one, or pick an existing game ID.</p>
       )}
 
-      <h3>Log</h3>
-      <pre style={{ background: "#111", color: "#0f0", padding: 8, maxHeight: 220, overflow: "auto", fontSize: 12 }}>
+      <h3 style={{ textTransform: "uppercase", letterSpacing: 2, fontSize: 13, color: "#c9a86a", marginTop: 28 }}>Log</h3>
+      <pre style={{ background: "#0d1117", color: "#8fce9b", padding: 12, maxHeight: 220, overflow: "auto", fontSize: 12, border: "1px solid rgba(255, 255, 255, 0.10)", borderRadius: 10 }}>
         {busy ? `Working: ${busy}…\n` : ""}
         {log.join("\n") || "—"}
       </pre>
 
       <hr />
-      <p style={{ fontSize: 13, color: "#bbb" }}>
+      <p style={{ fontSize: 13, color: "#8a93a3" }}>
         Honest labels: points are virtual, not money. Mole picks use real MagicBlock VRF when you press
         “REAL VRF”; the demo button uses slot-hash randomness and the game records it on chain as DEMO.
         Mole identities are hidden by this UI until reveal. On chain they sit in the delegated game
